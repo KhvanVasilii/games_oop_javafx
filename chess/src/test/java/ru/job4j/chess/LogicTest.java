@@ -32,19 +32,22 @@ public class LogicTest {
                 OccupiedCellException.class, () -> {
                     logic.move(Cell.C8, Cell.A6);
                 });
-        assertThat(exception).isInstanceOf(OccupiedCellException.class);
+        assertThat(exception.getMessage()).isEqualTo("Cell is occupied");
     }
 
     @Test
     public void whenMoveThenImpossibleMoveException()
             throws FigureNotFoundException, OccupiedCellException, ImpossibleMoveException {
+        Cell position = Cell.C8;
+        Cell dest = Cell.C5;
         Logic logic = new Logic();
-        BishopBlack bishopBlack = new BishopBlack(Cell.C8);
+        BishopBlack bishopBlack = new BishopBlack(position);
         logic.add(bishopBlack);
         ImpossibleMoveException exception = assertThrows(
                 ImpossibleMoveException.class, () -> {
-                    logic.move(Cell.C8, Cell.C5);
+                    logic.move(Cell.C8, dest);
                 });
-        assertThat(exception).isInstanceOf(ImpossibleMoveException.class);
+        assertThat(exception.getMessage()).isEqualTo(String.format(
+                "Could not move by diagonal from %s to %s", position, dest));
     }
 }
